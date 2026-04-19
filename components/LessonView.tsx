@@ -205,7 +205,7 @@ export default function LessonView({
                             <div className="flex-1 p-4 font-mono text-sm overflow-y-auto">
                                 {!checkResult && !isChecking && (
                                     <div className="text-slate-600 italic">
-                                        // Ready to execute. Click "Run Code" to compile and verify.
+                                        {/* Ready to execute. Click &quot;Run Code&quot; to compile and verify. */}
                                     </div>
                                 )}
                                 

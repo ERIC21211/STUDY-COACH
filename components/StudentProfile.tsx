@@ -19,8 +19,6 @@ interface StudentProfileProps {
 export default function StudentProfile({ user: initialUser, topics, modules }: StudentProfileProps) {
   const { updateFeedback, currentUser, students } = useApp();
   
-  if (!currentUser) return null;
-  
   // State for search functionality
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(initialUser.id === 'student-demo' && students.length > 0 ? students[0].id : initialUser.id);
@@ -37,6 +35,25 @@ export default function StudentProfile({ user: initialUser, topics, modules }: S
       setFeedbackInput(displayUser.lecturerFeedback || '');
   }, [displayUser.id, displayUser.lecturerFeedback]);
 
+  // Mock Class Data Generation (for Module Overview Context)
+  const mockClassData = React.useMemo(() => {
+      const studentsData = [];
+      const skills = ['Recursion', 'OOP', 'Security', 'Loops', 'Arrays'];
+      // Deterministic "random" based on topic length to stay stable
+      for (let i = 0; i < 25; i++) {
+          // Weighted random to simulate realistic class distribution
+          const baseMastery = 40 + ((i * 2) + topics.length) % 60; 
+          studentsData.push({
+              id: `student-${i}`,
+              mastery: baseMastery,
+              struggleSkill: skills[i % skills.length] 
+          });
+      }
+      return studentsData;
+  }, [topics.length]);
+
+  if (!currentUser) return null;
+
   // Filter students for search
   const filteredStudents = students.filter(s => 
     s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -47,23 +64,6 @@ export default function StudentProfile({ user: initialUser, topics, modules }: S
   const completedTopics = topics.filter(t => displayUser.completedTopicIds?.includes(t.id));
   const totalXP = displayUser.xp;
   const tasksCompleted = completedTopics.length;
-
-  // Mock Class Data Generation (for Module Overview Context)
-  const mockClassData = React.useMemo(() => {
-      const students = [];
-      const skills = ['Recursion', 'OOP', 'Security', 'Loops', 'Arrays'];
-      // Deterministic "random" based on topic length to stay stable
-      for (let i = 0; i < 25; i++) {
-          // Weighted random to simulate realistic class distribution
-          const baseMastery = 40 + ((i * 2) + topics.length) % 60; 
-          students.push({
-              id: `student-${i}`,
-              mastery: baseMastery,
-              struggleSkill: skills[i % skills.length] 
-          });
-      }
-      return students;
-  }, [topics.length]);
 
   // Calculate Module Overview Stats
   const classAverageMastery = Math.round(mockClassData.reduce((acc, s) => acc + s.mastery, 0) / mockClassData.length);
@@ -657,7 +657,7 @@ export default function StudentProfile({ user: initialUser, topics, modules }: S
                   {displayUser.lecturerFeedback ? (
                       <p className="text-slate-300 whitespace-pre-wrap">{displayUser.lecturerFeedback}</p>
                   ) : (
-                      <p className="text-slate-500 italic">No feedback provided yet. Click "Edit Report" to add structured feedback.</p>
+                      <p className="text-slate-500 italic">No feedback provided yet. Click &quot;Edit Report&quot; to add structured feedback.</p>
                   )}
               </div>
           )}

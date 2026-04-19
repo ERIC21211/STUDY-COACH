@@ -170,7 +170,7 @@ export default function LecturerView({ user, modules, onSelectModule }: Lecturer
                             <div className="col-span-2 py-12 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                 <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-20" />
                                 <p>No modules created yet.</p>
-                                <p className="text-sm mt-1">Click "Add New Module" in the sidebar to get started.</p>
+                                <p className="text-sm mt-1">Click &quot;Add New Module&quot; in the sidebar to get started.</p>
                             </div>
                         )}
                     </div>
